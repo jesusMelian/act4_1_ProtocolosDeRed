@@ -26,11 +26,11 @@ public class Main {
         final int PORT = sc.nextInt();
 
 
-
+        sc.nextLine();
         System.out.println("Introduzca la contraseña");
         final String PASSWORD = sc.nextLine();
         try {
-            if(USERNAME != null && HOST != null && PASSWORD != null) {
+            if(USERNAME != null && HOST != null ) {
                 session = new JSch().getSession(USERNAME, HOST, PORT);
                 session.setPassword(PASSWORD);
                 session.setConfig("StrictHostKeyChecking", "no");
@@ -40,9 +40,14 @@ public class Main {
 
                 System.out.println("Inserte el nombre del archivo de registro");
                 String archive = sc.nextLine();
-                if(comprobeArchive(archive)){
-                    channel.setCommand(ROUTE+archive);
+
+                while(!comprobeArchive(archive)){
+                    System.out.println("El archivo debe terminar en .log");
+                    System.out.println("Inserte el nombre del archivo de registro");
+                    archive = sc.nextLine();
                 }
+
+                
 
             }
         } catch (Exception e) {
@@ -50,5 +55,14 @@ public class Main {
         }
     }
 
-    
+    public static boolean comprobeArchive(String archive) {
+        String extension = archive.substring(archive.length()-4);
+        //System.out.println(extension);
+        if(extension.equals(".log")){
+            //System.out.println("DEVUELVO TRUE");
+            return true;
+        }
+        return false;
+    }
+
 }
